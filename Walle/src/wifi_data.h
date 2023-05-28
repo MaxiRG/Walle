@@ -20,8 +20,8 @@
  *  SSID and PASS for Home
  */
 
-#define MY_SSID "Samsung S21 FE"
-#define MY_PASS "puntadeleste"
+#define MY_SSID "EOLO"
+#define MY_PASS "Elefante"
 
 #endif
 

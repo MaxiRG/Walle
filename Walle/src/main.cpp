@@ -30,6 +30,7 @@ const double sound_speed = 0.0343;
 #define TRIG_PIN 19
 #define ECHO_PIN 21
 #define PLAYER 5
+#define ALARM 12
 const int threashold = 30;
 int touchValue;
 
@@ -76,6 +77,12 @@ String outputState(int output){
   else {
     return "";
   }
+}
+
+void PlayAlarm(){
+    digitalWrite(ALARM, HIGH);
+    delay(50);
+    digitalWrite(ALARM, LOW);
 }
 
 // Replaces placeholder with button section in your web page
@@ -170,6 +177,7 @@ setup(void)
   pinMode(ECHO_PIN, INPUT);           // echoPin as input
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(PLAYER, OUTPUT);
+  pinMode(ALARM, OUTPUT);
 }
 
 void
@@ -185,17 +193,19 @@ if(digitalRead(32) == HIGH){
   distance = duration * sound_speed / 2;
   Serial.println("Distance: " + (int)distance);
 
-  touchValue = touchRead(4);
+
 
   Serial.println("Touch value: " + touchValue);
 
+  touchValue = touchRead(4);
+
   if (distance < 50){
     digitalWrite(LED_BUILTIN, HIGH);
-    digitalWrite(PLAYER, HIGH);
-
-  }
-
-  if(touchValue < threashold){
+    while(touchValue > threashold){
+      touchValue = touchRead(4);
+      digitalWrite(PLAYER, HIGH);
+      PlayAlarm();
+    }
     digitalWrite(LED_BUILTIN, LOW);
     digitalWrite(PLAYER, LOW);
   }
